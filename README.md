@@ -1,6 +1,6 @@
-# ADHD App
+# DONA AI
 
-A modern React Native application built with Expo, designed to help manage ADHD symptoms and improve focus.
+A modern React Native application built with Expo, featuring AI-powered assistance and a clean, professional interface.
 
 ## 🚀 Quick Start
 
@@ -48,11 +48,10 @@ A modern React Native application built with Expo, designed to help manage ADHD 
 ## 📁 Project Structure
 
 ```
-adhd/
+dona-ai/
 ├── app/                    # Expo Router pages (file-based routing)
-│   ├── (tabs)/            # Tab navigation screens
-│   ├── _layout.tsx        # Root layout
-│   └── +not-found.tsx     # 404 page
+│   ├── index.tsx          # Login screen
+│   └── _layout.tsx        # Root layout
 ├── src/                   # Source code
 │   ├── components/        # Reusable UI components
 │   ├── hooks/            # Custom React hooks
@@ -148,6 +147,7 @@ We welcome contributions! Please follow these guidelines:
 - **Expo Router** - File-based routing
 - **Modern UI** - Built with React Native components
 - **Handjet Font** - Custom typography with [Handjet font family](https://fonts.google.com/specimen/Handjet)
+- **Overused Grotesk Font** - Professional typography for body text and UI elements
 - **Development Tools** - Hot reload, debugging support
 
 ## 🔧 Configuration
@@ -169,6 +169,18 @@ The project includes VS Code workspace settings for optimal development experien
 - ESLint integration
 - TypeScript support
 - Recommended extensions
+
+## 🎨 Typography
+
+This project uses two custom font families:
+
+- **Handjet** - Used for headings, titles, and brand elements
+- **Overused Grotesk** - Used for body text, UI elements, and secondary content
+
+See the documentation for detailed usage:
+
+- [Handjet Font Guide](docs/HANDJET_FONT.md)
+- [Overused Grotesk Font Guide](docs/OVERUSED_GROTESK_FONT.md)
 
 ## 📚 Learn More
 

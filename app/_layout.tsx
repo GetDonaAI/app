@@ -6,7 +6,7 @@ import {
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
 import {
@@ -18,12 +18,13 @@ import {
 } from '@expo-google-fonts/handjet';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { loadCustomFonts } from '@/src/utils/fonts';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
-  anchor: '(tabs)',
+  initialRouteName: 'index',
 };
 
 export default function RootLayout() {
@@ -34,27 +35,40 @@ export default function RootLayout() {
     Handjet_600SemiBold,
     Handjet_700Bold,
   });
+  const [customFontsLoaded, setCustomFontsLoaded] = useState(false);
 
   useEffect(() => {
-    if (fontsLoaded) {
+    const loadFonts = async () => {
+      try {
+        await loadCustomFonts();
+        setCustomFontsLoaded(true);
+      } catch (error) {
+        console.error('Error loading custom fonts:', error);
+        setCustomFontsLoaded(true); // Continue even if fonts fail to load
+      }
+    };
+
+    loadFonts();
+  }, []);
+
+  useEffect(() => {
+    if (fontsLoaded && customFontsLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [fontsLoaded]);
+  }, [fontsLoaded, customFontsLoaded]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || !customFontsLoaded) {
     return null;
   }
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: 'modal', title: 'Modal' }}
-        />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </ThemeProvider>
   );
 }
