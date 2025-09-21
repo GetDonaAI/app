@@ -98,8 +98,7 @@ export default function AuthScreen() {
   const handleEmailLogin = () => {
     animatePress(emailScale, () => {
       console.log('Email login pressed');
-      // TODO: Implement Email authentication
-      router.replace('/(tabs)');
+      router.push('/(auth)/email-login');
     });
   };
 
