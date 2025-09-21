@@ -24,6 +24,13 @@ export default function AuthLayout() {
           animation: Platform.OS === 'ios' ? 'slide_from_right' : 'fade',
         }} 
       />
+      <Stack.Screen 
+        name="otp-verification" 
+        options={{ 
+          title: 'OTP Verification',
+          animation: Platform.OS === 'ios' ? 'slide_from_right' : 'fade',
+        }} 
+      />
     </Stack>
   );
 }

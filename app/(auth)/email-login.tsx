@@ -99,8 +99,8 @@ export default function EmailLoginScreen() {
       }
       
       console.log('Continue with email:', email);
-      // TODO: Implement email authentication
-      router.replace('/(tabs)');
+      // Navigate to OTP verification screen
+      router.push(`/(auth)/otp-verification?email=${encodeURIComponent(email)}`);
     });
   };
 
