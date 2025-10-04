@@ -39,13 +39,14 @@ Thanks for considering contributing! Here's how you can help.
 ## Issues
 
 Found a bug or have an idea? Open an issue with:
+
 - Clear description of the problem/idea
 - Steps to reproduce (for bugs)
 - Screenshots if relevant
 
 ## Hacktoberfest
 
-We're participating in Hacktoberfest! 🎉 
+We're participating in Hacktoberfest! 🎉
 
 Look for issues labeled with `hacktoberfest` - these are great entry points for new contributors. Remember to get assigned to an issue before starting work.
 

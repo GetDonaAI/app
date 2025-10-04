@@ -11,6 +11,7 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. See error
@@ -22,6 +23,7 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Screenshots**
+
 - Platform: [e.g. iOS/Android/Web]
 - Device: [e.g. iPhone 15 Pro, Pixel 7]
 - App version: [e.g. 1.0.0]

@@ -17,17 +17,20 @@ Instead of gamification and fake dopamine hits, this focuses on accountability s
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone <repository-url>
    cd adhd
    ```
 
 2. Install dependencies
+
    ```bash
    npm install
    ```
 
 3. Start development server
+
    ```bash
    npm start
    ```
