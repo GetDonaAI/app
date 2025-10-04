@@ -11,25 +11,25 @@ export default function AuthLayout() {
         gestureDirection: 'horizontal',
       }}
     >
-      <Stack.Screen 
-        name="index" 
-        options={{ 
-          title: 'Authentication'
-        }} 
+      <Stack.Screen
+        name="index"
+        options={{
+          title: 'Authentication',
+        }}
       />
-      <Stack.Screen 
-        name="email-login" 
-        options={{ 
+      <Stack.Screen
+        name="email-login"
+        options={{
           title: 'Email Login',
           animation: Platform.OS === 'ios' ? 'slide_from_right' : 'fade',
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="otp-verification" 
-        options={{ 
+      <Stack.Screen
+        name="otp-verification"
+        options={{
           title: 'OTP Verification',
           animation: Platform.OS === 'ios' ? 'slide_from_right' : 'fade',
-        }} 
+        }}
       />
     </Stack>
   );

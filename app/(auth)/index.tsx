@@ -8,7 +8,7 @@ import {
   Animated,
   Dimensions,
 } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { HandjetText, OverusedGroteskText, GoogleIcon } from '@/src/components';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,21 +17,21 @@ import { COLORS } from '@/src/constants';
 export default function AuthScreen() {
   // Get safe area insets for proper spacing
   const insets = useSafeAreaInsets();
-  
+
   // Get screen dimensions for responsive design
   const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-  
+
   // Calculate available height after safe area insets
   const availableHeight = screenHeight - insets.top - insets.bottom;
-  
+
   // Calculate responsive dimensions
   const containerWidth = Math.min(screenWidth * 0.95, 382); // 95% of screen width, max 382px
   const buttonWidth = containerWidth - 20; // 20px padding from container
-  
+
   // Calculate heights based on available space
   const titleHeight = availableHeight * 0.3;
   const buttonsContainerHeight = availableHeight * 0.7;
-  
+
   // Original design dimensions for scaling
   const originalGap = 10;
   const originalPadding = 10;
@@ -42,10 +42,10 @@ export default function AuthScreen() {
   const originalFooterHeight = 62;
   const originalFooterPadding = 24;
   const originalFooterGap = 59;
-  
+
   // Calculate scale factor based on screen width
   const scaleFactor = Math.min(screenWidth / 400, 1);
-  
+
   // Apply scaling to maintain proportions
   const gap = originalGap * scaleFactor;
   const padding = originalPadding * scaleFactor;
@@ -56,7 +56,7 @@ export default function AuthScreen() {
   const footerHeight = originalFooterHeight * scaleFactor;
   const footerPadding = originalFooterPadding * scaleFactor;
   const footerGap = originalFooterGap * scaleFactor;
-  
+
   // Animation values for each button
   const appleScale = useRef(new Animated.Value(1)).current;
   const googleScale = useRef(new Animated.Value(1)).current;
@@ -124,14 +124,19 @@ export default function AuthScreen() {
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
       <View style={styles.container}>
         {/* Container 1: DONA AI Title - 30% of available height */}
-        <View style={[styles.titleContainer, { 
-          width: containerWidth, 
-          height: titleHeight,
-          marginTop: insets.top 
-        }]}>
-          <HandjetText 
-            weight="medium" 
-            size={48 * scaleFactor} 
+        <View
+          style={[
+            styles.titleContainer,
+            {
+              width: containerWidth,
+              height: titleHeight,
+              marginTop: insets.top,
+            },
+          ]}
+        >
+          <HandjetText
+            weight="medium"
+            size={48 * scaleFactor}
             style={styles.title}
           >
             DONA AI
@@ -139,31 +144,48 @@ export default function AuthScreen() {
         </View>
 
         {/* Container 2: Buttons and Footer - 70% of available height */}
-        <View style={[styles.buttonsContainer, { 
-          width: containerWidth, 
-          height: buttonsContainerHeight,
-          padding: padding,
-          marginBottom: insets.bottom
-        }]}>
+        <View
+          style={[
+            styles.buttonsContainer,
+            {
+              width: containerWidth,
+              height: buttonsContainerHeight,
+              padding: padding,
+              marginBottom: insets.bottom,
+            },
+          ]}
+        >
           {/* Buttons Wrapper */}
-          <View style={[styles.buttonsWrapper, { gap: 16 * scaleFactor, paddingBottom: gap }]}>
+          <View
+            style={[
+              styles.buttonsWrapper,
+              { gap: 16 * scaleFactor, paddingBottom: gap },
+            ]}
+          >
             {/* Apple Login Button */}
             <Animated.View style={{ transform: [{ scale: appleScale }] }}>
               <TouchableOpacity
-                style={[styles.loginButton, { 
-                  width: buttonWidth, 
-                  height: buttonHeight,
-                  paddingTop: buttonPadding,
-                  paddingRight: buttonHorizontalPadding,
-                  paddingBottom: buttonPadding,
-                  paddingLeft: buttonHorizontalPadding,
-                  gap: gap
-                }]}
+                style={[
+                  styles.loginButton,
+                  {
+                    width: buttonWidth,
+                    height: buttonHeight,
+                    paddingTop: buttonPadding,
+                    paddingRight: buttonHorizontalPadding,
+                    paddingBottom: buttonPadding,
+                    paddingLeft: buttonHorizontalPadding,
+                    gap: gap,
+                  },
+                ]}
                 onPress={handleAppleLogin}
                 activeOpacity={1}
               >
                 <View style={[styles.buttonContent, { gap: gap }]}>
-                  <Ionicons name="logo-apple" size={20 * scaleFactor} color={COLORS.background} />
+                  <Ionicons
+                    name="logo-apple"
+                    size={20 * scaleFactor}
+                    color={COLORS.background}
+                  />
                   <OverusedGroteskText
                     weight="medium"
                     size={16 * scaleFactor}
@@ -178,15 +200,18 @@ export default function AuthScreen() {
             {/* Google Login Button */}
             <Animated.View style={{ transform: [{ scale: googleScale }] }}>
               <TouchableOpacity
-                style={[styles.loginButton, { 
-                  width: buttonWidth, 
-                  height: buttonHeight,
-                  paddingTop: buttonPadding,
-                  paddingRight: buttonHorizontalPadding,
-                  paddingBottom: buttonPadding,
-                  paddingLeft: buttonHorizontalPadding,
-                  gap: gap
-                }]}
+                style={[
+                  styles.loginButton,
+                  {
+                    width: buttonWidth,
+                    height: buttonHeight,
+                    paddingTop: buttonPadding,
+                    paddingRight: buttonHorizontalPadding,
+                    paddingBottom: buttonPadding,
+                    paddingLeft: buttonHorizontalPadding,
+                    gap: gap,
+                  },
+                ]}
                 onPress={handleGoogleLogin}
                 activeOpacity={1}
               >
@@ -206,20 +231,27 @@ export default function AuthScreen() {
             {/* Email Login Button */}
             <Animated.View style={{ transform: [{ scale: emailScale }] }}>
               <TouchableOpacity
-                style={[styles.loginButton, { 
-                  width: buttonWidth, 
-                  height: buttonHeight,
-                  paddingTop: buttonPadding,
-                  paddingRight: buttonHorizontalPadding,
-                  paddingBottom: buttonPadding,
-                  paddingLeft: buttonHorizontalPadding,
-                  gap: gap
-                }]}
+                style={[
+                  styles.loginButton,
+                  {
+                    width: buttonWidth,
+                    height: buttonHeight,
+                    paddingTop: buttonPadding,
+                    paddingRight: buttonHorizontalPadding,
+                    paddingBottom: buttonPadding,
+                    paddingLeft: buttonHorizontalPadding,
+                    gap: gap,
+                  },
+                ]}
                 onPress={handleEmailLogin}
                 activeOpacity={1}
               >
                 <View style={[styles.buttonContent, { gap: gap }]}>
-                  <Ionicons name="mail" size={20 * scaleFactor} color={COLORS.background} />
+                  <Ionicons
+                    name="mail"
+                    size={20 * scaleFactor}
+                    color={COLORS.background}
+                  />
                   <OverusedGroteskText
                     weight="medium"
                     size={16 * scaleFactor}
@@ -233,16 +265,19 @@ export default function AuthScreen() {
 
             {/* Login Link */}
             <Animated.View style={{ transform: [{ scale: loginScale }] }}>
-              <TouchableOpacity 
-                style={[styles.loginLink, { 
-                  width: buttonWidth, 
-                  height: loginLinkHeight,
-                  paddingTop: buttonPadding,
-                  paddingRight: buttonHorizontalPadding,
-                  paddingBottom: buttonPadding,
-                  paddingLeft: buttonHorizontalPadding,
-                  gap: gap
-                }]} 
+              <TouchableOpacity
+                style={[
+                  styles.loginLink,
+                  {
+                    width: buttonWidth,
+                    height: loginLinkHeight,
+                    paddingTop: buttonPadding,
+                    paddingRight: buttonHorizontalPadding,
+                    paddingBottom: buttonPadding,
+                    paddingLeft: buttonHorizontalPadding,
+                    gap: gap,
+                  },
+                ]}
                 onPress={handleGuestLogin}
                 activeOpacity={1}
               >
@@ -258,14 +293,19 @@ export default function AuthScreen() {
           </View>
 
           {/* Footer Links Container */}
-          <View style={[styles.footerContainer, { 
-            width: buttonWidth,
-            minHeight: footerHeight,
-            paddingTop: footerPadding,
-            paddingBottom: footerPadding,
-            gap: footerGap,
-            marginTop: gap
-          }]}>
+          <View
+            style={[
+              styles.footerContainer,
+              {
+                width: buttonWidth,
+                minHeight: footerHeight,
+                paddingTop: footerPadding,
+                paddingBottom: footerPadding,
+                gap: footerGap,
+                marginTop: gap,
+              },
+            ]}
+          >
             <Pressable onPress={handlePrivacyPolicy}>
               <OverusedGroteskText
                 weight="medium"

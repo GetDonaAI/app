@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { HandjetText, OverusedGroteskText } from '@/src/components';
+import { HandjetText } from '@/src/components';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '@/src/constants';
 
@@ -24,25 +24,33 @@ export default function EmailLoginScreen() {
   const [isFocused, setIsFocused] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [emailError, setEmailError] = useState('');
-  
+
   // Calculate responsive dimensions
   const containerWidth = Math.min(screenWidth * 0.95, 382);
   const buttonWidth = containerWidth - 20;
   const scaleFactor = Math.min(screenWidth / 400, 1);
-  
+
   // Android-specific responsive adjustments
   const isAndroid = Platform.OS === 'android';
-  const androidScaleFactor = isAndroid ? Math.min(screenWidth / 360, 1) : scaleFactor;
+  const androidScaleFactor = isAndroid
+    ? Math.min(screenWidth / 360, 1)
+    : scaleFactor;
 
   // Handle keyboard events for Android
   useEffect(() => {
     if (isAndroid) {
-      const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
-        setKeyboardHeight(e.endCoordinates.height);
-      });
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        setKeyboardHeight(0);
-      });
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        e => {
+          setKeyboardHeight(e.endCoordinates.height);
+        }
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardHeight(0);
+        }
+      );
 
       return () => {
         keyboardDidShowListener?.remove();
@@ -50,7 +58,7 @@ export default function EmailLoginScreen() {
       };
     }
   }, [isAndroid]);
-  
+
   // Animation values
   const backButtonScale = useRef(new Animated.Value(1)).current;
   const continueButtonScale = useRef(new Animated.Value(1)).current;
@@ -86,28 +94,30 @@ export default function EmailLoginScreen() {
     animatePress(continueButtonScale, () => {
       // Clear previous error
       setEmailError('');
-      
+
       // Validate email
       if (!email.trim()) {
         setEmailError('EMAIL IS REQUIRED');
         return;
       }
-      
+
       if (!validateEmail(email)) {
         setEmailError('PLEASE ENTER A VALID EMAIL');
         return;
       }
-      
+
       console.log('Continue with email:', email);
       // Navigate to OTP verification screen
-      router.push(`/(auth)/otp-verification?email=${encodeURIComponent(email)}`);
+      router.push(
+        `/(auth)/otp-verification?email=${encodeURIComponent(email)}`
+      );
     });
   };
 
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
@@ -120,16 +130,20 @@ export default function EmailLoginScreen() {
               onPress={handleBackPress}
               activeOpacity={1}
             >
-              <Ionicons name="chevron-back" size={24} color={COLORS.foreground} />
+              <Ionicons
+                name="chevron-back"
+                size={24}
+                color={COLORS.foreground}
+              />
             </TouchableOpacity>
           </Animated.View>
         </View>
 
         {/* Middle Section - DONA AI Title */}
         <View style={styles.middleSection}>
-          <HandjetText 
-            weight="medium" 
-            size={48 * androidScaleFactor} 
+          <HandjetText
+            weight="medium"
+            size={48 * androidScaleFactor}
             style={[styles.title, { letterSpacing: 10 * androidScaleFactor }]}
           >
             DONA AI
@@ -137,15 +151,25 @@ export default function EmailLoginScreen() {
         </View>
 
         {/* Bottom Section - Email Input and Continue Button */}
-        <View style={[styles.bottomSection, { 
-          paddingBottom: keyboardHeight > 0 && isAndroid ? 20 : 10,
-          marginBottom: keyboardHeight > 0 && isAndroid ? 20 : 0
-        }]}>
+        <View
+          style={[
+            styles.bottomSection,
+            {
+              paddingBottom: keyboardHeight > 0 && isAndroid ? 20 : 10,
+              marginBottom: keyboardHeight > 0 && isAndroid ? 20 : 0,
+            },
+          ]}
+        >
           {/* Email Input Group - Error + Input */}
           <View style={styles.emailGroup}>
             {/* Error Message */}
             {emailError ? (
-              <View style={[styles.errorContainer, { width: buttonWidth, alignSelf: 'center' }]}>
+              <View
+                style={[
+                  styles.errorContainer,
+                  { width: buttonWidth, alignSelf: 'center' },
+                ]}
+              >
                 <HandjetText
                   weight="regular"
                   size={16 * androidScaleFactor}
@@ -155,12 +179,20 @@ export default function EmailLoginScreen() {
                 </HandjetText>
               </View>
             ) : null}
-            
+
             {/* Email Input Field */}
-            <View style={[styles.emailInputContainer, { width: buttonWidth, alignSelf: 'center' }]}>
+            <View
+              style={[
+                styles.emailInputContainer,
+                { width: buttonWidth, alignSelf: 'center' },
+              ]}
+            >
               <TextInput
-                style={[styles.emailInput, { fontSize: 20 * androidScaleFactor }]}
-                placeholder={isFocused ? "" : "ENTER YOU EMAIL"}
+                style={[
+                  styles.emailInput,
+                  { fontSize: 20 * androidScaleFactor },
+                ]}
+                placeholder={isFocused ? '' : 'ENTER YOU EMAIL'}
                 placeholderTextColor="#525252"
                 value={email}
                 onChangeText={setEmail}
@@ -181,13 +213,18 @@ export default function EmailLoginScreen() {
           </View>
 
           {/* Continue Button */}
-          <Animated.View style={{ transform: [{ scale: continueButtonScale }] }}>
+          <Animated.View
+            style={{ transform: [{ scale: continueButtonScale }] }}
+          >
             <TouchableOpacity
-              style={[styles.continueButton, { 
-                width: buttonWidth,
-                paddingVertical: 36 * androidScaleFactor,
-                paddingHorizontal: 10 * androidScaleFactor,
-              }]}
+              style={[
+                styles.continueButton,
+                {
+                  width: buttonWidth,
+                  paddingVertical: 36 * androidScaleFactor,
+                  paddingHorizontal: 10 * androidScaleFactor,
+                },
+              ]}
               onPress={handleContinue}
               activeOpacity={1}
             >

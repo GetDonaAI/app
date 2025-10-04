@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
-import { HandjetText, OverusedGroteskText } from '@/src/components';
+import { HandjetText } from '@/src/components';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '@/src/constants';
 
@@ -23,31 +23,39 @@ export default function OTPVerificationScreen() {
   const { email } = useLocalSearchParams();
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [isFocused, setIsFocused] = useState(false);
+  const [setIsFocused] = useState(false);
   const [otpError, setOtpError] = useState('');
   const [focusedIndex, setFocusedIndex] = useState(0);
-  const [isShaking, setIsShaking] = useState(false);
+  const [setIsShaking] = useState(false);
   const [isWrongOtp, setIsWrongOtp] = useState(false);
   const inputRefs = useRef<TextInput[]>([]);
-  
+
   // Calculate responsive dimensions
   const containerWidth = Math.min(screenWidth * 0.95, 382);
   const buttonWidth = containerWidth - 20;
   const scaleFactor = Math.min(screenWidth / 400, 1);
-  
+
   // Android-specific responsive adjustments
   const isAndroid = Platform.OS === 'android';
-  const androidScaleFactor = isAndroid ? Math.min(screenWidth / 360, 1) : scaleFactor;
+  const androidScaleFactor = isAndroid
+    ? Math.min(screenWidth / 360, 1)
+    : scaleFactor;
 
   // Handle keyboard events for Android
   useEffect(() => {
     if (isAndroid) {
-      const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
-        setKeyboardHeight(e.endCoordinates.height);
-      });
-      const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
-        setKeyboardHeight(0);
-      });
+      const keyboardDidShowListener = Keyboard.addListener(
+        'keyboardDidShow',
+        e => {
+          setKeyboardHeight(e.endCoordinates.height);
+        }
+      );
+      const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+          setKeyboardHeight(0);
+        }
+      );
 
       return () => {
         keyboardDidShowListener?.remove();
@@ -64,7 +72,7 @@ export default function OTPVerificationScreen() {
 
     return () => clearTimeout(timer);
   }, []);
-  
+
   // Animation values
   const backButtonScale = useRef(new Animated.Value(1)).current;
   const shakeAnimation = useRef(new Animated.Value(0)).current;
@@ -97,22 +105,23 @@ export default function OTPVerificationScreen() {
       // This is likely a paste operation
       const digits = text.replace(/\D/g, '').slice(0, 6); // Only keep digits, max 6
       const newOtp = [...otp];
-      
+
       // Fill OTP fields with pasted digits
       for (let i = 0; i < digits.length && i < 6; i++) {
         newOtp[i] = digits[i];
       }
-      
+
       setOtp(newOtp);
       setOtpError(''); // Clear error when user types
-      
+
       // Focus the next empty field or the last filled field
       const nextEmptyIndex = newOtp.findIndex(digit => digit === '');
-      const focusIndex = nextEmptyIndex !== -1 ? nextEmptyIndex : Math.min(digits.length - 1, 5);
-      
+      const focusIndex =
+        nextEmptyIndex !== -1 ? nextEmptyIndex : Math.min(digits.length - 1, 5);
+
       setFocusedIndex(focusIndex);
       inputRefs.current[focusIndex]?.focus();
-      
+
       // Check if all fields are filled
       if (newOtp.every(digit => digit !== '')) {
         // Auto-trigger verification
@@ -120,22 +129,22 @@ export default function OTPVerificationScreen() {
           handleVerify(newOtp.join(''));
         }, 100);
       }
-      
+
       return;
     }
-    
+
     // Single digit input
     const newOtp = [...otp];
     newOtp[index] = text;
     setOtp(newOtp);
     setOtpError(''); // Clear error when user types
-    
+
     // Auto-focus next input if text is entered
     if (text && index < 5) {
       setFocusedIndex(index + 1);
       inputRefs.current[index + 1]?.focus();
     }
-    
+
     // Check if all fields are filled
     const updatedOtp = [...newOtp];
     if (updatedOtp.every(digit => digit !== '')) {
@@ -157,7 +166,7 @@ export default function OTPVerificationScreen() {
         // If current field is empty, go to previous field and clear it
         setFocusedIndex(index - 1);
         inputRefs.current[index - 1]?.focus();
-        
+
         // Clear the previous field
         const newOtp = [...otp];
         newOtp[index - 1] = '';
@@ -212,22 +221,21 @@ export default function OTPVerificationScreen() {
     // Clear previous error and states
     setOtpError('');
     setIsWrongOtp(false);
-    
+
     // Use provided OTP string or current state
     const currentOtp = otpString || otp.join('');
-    
+
     // Validate OTP
     if (currentOtp.length !== 6) {
       setOtpError('PLEASE ENTER ALL 6 DIGITS');
       return;
     }
-    
+
     console.log('Verify OTP:', currentOtp, 'for email:', email);
-    
+
     // Test mode - you can change this for testing
     const TEST_CORRECT_OTP = '123456'; // Change this to test different scenarios
-    const TEST_WRONG_OTP = '000000';   // Always wrong OTP for testing
-    
+
     // Simulate API call delay
     setTimeout(() => {
       if (currentOtp === TEST_CORRECT_OTP) {
@@ -239,7 +247,7 @@ export default function OTPVerificationScreen() {
         setOtpError('INVALID OTP. PLEASE TRY AGAIN');
         setIsWrongOtp(true);
         triggerShakeAnimation();
-        
+
         // Clear OTP after 2 seconds
         setTimeout(() => {
           setOtp(['', '', '', '', '', '']);
@@ -253,7 +261,7 @@ export default function OTPVerificationScreen() {
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
@@ -266,14 +274,18 @@ export default function OTPVerificationScreen() {
               onPress={handleBackPress}
               activeOpacity={1}
             >
-              <Ionicons name="chevron-back" size={24} color={COLORS.foreground} />
+              <Ionicons
+                name="chevron-back"
+                size={24}
+                color={COLORS.foreground}
+              />
             </TouchableOpacity>
           </Animated.View>
-          
+
           <View style={styles.titleContainer}>
-            <HandjetText 
-              weight="regular" 
-              size={24 * androidScaleFactor} 
+            <HandjetText
+              weight="regular"
+              size={24 * androidScaleFactor}
               style={styles.title}
             >
               ENTER CODE
@@ -283,9 +295,9 @@ export default function OTPVerificationScreen() {
 
         {/* Instructions Section */}
         <View style={styles.instructionsSection}>
-          <HandjetText 
-            weight="regular" 
-            size={16 * androidScaleFactor} 
+          <HandjetText
+            weight="regular"
+            size={16 * androidScaleFactor}
             style={styles.instructions}
           >
             Please enter the code sent to your email {email} to login.
@@ -293,13 +305,23 @@ export default function OTPVerificationScreen() {
         </View>
 
         {/* Middle Section - OTP Input and Verify Button */}
-        <View style={[styles.middleSection, { 
-          paddingBottom: keyboardHeight > 0 && isAndroid ? 20 : 10,
-          marginBottom: keyboardHeight > 0 && isAndroid ? 20 : 0
-        }]}>
+        <View
+          style={[
+            styles.middleSection,
+            {
+              paddingBottom: keyboardHeight > 0 && isAndroid ? 20 : 10,
+              marginBottom: keyboardHeight > 0 && isAndroid ? 20 : 0,
+            },
+          ]}
+        >
           {/* Error Message */}
           {otpError ? (
-            <View style={[styles.errorContainer, { width: buttonWidth, alignSelf: 'center' }]}>
+            <View
+              style={[
+                styles.errorContainer,
+                { width: buttonWidth, alignSelf: 'center' },
+              ]}
+            >
               <HandjetText
                 weight="regular"
                 size={16 * androidScaleFactor}
@@ -309,33 +331,38 @@ export default function OTPVerificationScreen() {
               </HandjetText>
             </View>
           ) : null}
-          
+
           {/* OTP Input Boxes */}
-          <Animated.View 
+          <Animated.View
             style={[
               styles.otpContainer,
-              { transform: [{ translateX: shakeAnimation }] }
+              { transform: [{ translateX: shakeAnimation }] },
             ]}
           >
             {otp.map((digit, index) => (
-              <View 
-                key={index} 
+              <View
+                key={index}
                 style={[
                   styles.otpBox,
                   focusedIndex === index && styles.otpBoxFocused,
-                  isWrongOtp && styles.otpBoxError
+                  isWrongOtp && styles.otpBoxError,
                 ]}
               >
                 <TextInput
-                  ref={(ref) => {
+                  ref={ref => {
                     if (ref) {
                       inputRefs.current[index] = ref;
                     }
                   }}
-                  style={[styles.otpInput, { fontSize: 20 * androidScaleFactor }]}
+                  style={[
+                    styles.otpInput,
+                    { fontSize: 20 * androidScaleFactor },
+                  ]}
                   value={digit}
-                  onChangeText={(text) => handleOtpChange(text, index)}
-                  onKeyPress={({ nativeEvent }) => handleKeyPress(nativeEvent.key, index)}
+                  onChangeText={text => handleOtpChange(text, index)}
+                  onKeyPress={({ nativeEvent }) =>
+                    handleKeyPress(nativeEvent.key, index)
+                  }
                   keyboardType="number-pad"
                   maxLength={1}
                   textAlign="center"
@@ -348,7 +375,6 @@ export default function OTPVerificationScreen() {
               </View>
             ))}
           </Animated.View>
-
         </View>
       </KeyboardAvoidingView>
     </>
